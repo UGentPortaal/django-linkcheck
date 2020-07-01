@@ -212,9 +212,14 @@ class Url(models.Model):
         elif tested_url.startswith('/'):
             old_prepend_setting = settings.PREPEND_WWW
             settings.PREPEND_WWW = False
+            """
+            original code
             c = Client()
             c.handler = LinkCheckHandler()
             response = c.get(tested_url)
+            """
+            tested_url = 'http://'+settings.ALLOWED_HOSTS[0]+tested_url
+            response = requests.get(tested_url, verify=True)
             if response.status_code == 200:
                 self.message = 'Working internal link'
                 self.status = True
@@ -236,7 +241,8 @@ class Url(models.Model):
                         self.message = 'Failed to parse HTML for anchor'
 
             elif response.status_code == 302 or response.status_code == 301:
-                redir_response = c.get(tested_url, follow=True)
+                # redir_response = c.get(tested_url, follow=True)
+                redir_response = requests.get(tested_url, allow_redirects=True)
                 if redir_response.status_code == 200:
                     redir_state = 'Working redirect'
                     self.status = True
