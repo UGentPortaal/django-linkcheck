@@ -230,7 +230,7 @@ class Url(models.Model):
                     anchor = tested_url.split('#')[1]
                     from linkcheck import parse_anchors
                     try:
-                        names = parse_anchors(response.content)
+                        names = parse_anchors(str(response.content))
                         if anchor in names:
                             self.message = 'Working internal hash anchor'
                             self.status = True
