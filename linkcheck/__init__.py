@@ -79,6 +79,9 @@ class AnchorLister(HTMLParser):
             if name:
                 self.names.append(name[0])
         if tag == 'div':
+            name = [v for k, v in attributes if k=='data-unique']
+            if name:
+                self.names.append(name[0])
             # for some strange reason, urls seems lowercased
             name = [v.lower() for k, v in attributes if k=='data-unique']
             if name:
