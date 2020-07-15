@@ -6,7 +6,10 @@ import logging
 import requests
 from requests.exceptions import ReadTimeout
 from requests.models import REDIRECT_STATI
-from urllib.parse import unquote
+try:
+    from urllib.parse import unquote
+except ImportError:
+     from urlparse import unquote
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
